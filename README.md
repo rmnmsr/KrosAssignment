@@ -90,7 +90,6 @@ docker compose down -v
 Po spustení aplikácie je k dispozícii interaktívna dokumentácia:
 
 - **Scalar UI**: `http://localhost:5223/scalar/v1`
-- **Swagger UI**: `http://localhost:5223/swagger`
 
 ## Endpointy
 
