@@ -1,3 +1,17 @@
+# @name CreateEmployeeForCompany
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Ján Varga",
+  "email": "jan.varga@test.com",
+  "phone": "+421 900 000 005"
+}
+
+###
+
 # @name CreateCompany
 ## TEST-EXPECT-STATUS: [201]
 ## TEST-HAS-BODY
@@ -6,7 +20,22 @@ Content-Type: application/json
 
 {
   "name": "Test Company For Dept",
-  "code": "TCFD001"
+  "code": "TCFD001",
+  "leaderId": {{CreateEmployeeForCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDivision
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Mgr.",
+  "fullName": "Katarína Tóthová",
+  "email": "katarina.tothova@test.com",
+  "phone": "+421 900 000 006"
 }
 
 ###
@@ -20,7 +49,22 @@ Content-Type: application/json
 {
   "name": "Test Division For Dept",
   "code": "TDFD001",
-  "companyId": {{CreateCompany.response.body.$.id}}
+  "companyId": {{CreateCompany.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDivision.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForProject
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Bc.",
+  "fullName": "Tomáš Nagy",
+  "email": "tomas.nagy@test.com",
+  "phone": "+421 900 000 007"
 }
 
 ###
@@ -34,7 +78,22 @@ Content-Type: application/json
 {
   "name": "Test Project For Dept",
   "code": "TPFD001",
-  "divisionId": {{CreateDivision.response.body.$.id}}
+  "divisionId": {{CreateDivision.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForProject.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDepartment
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Zuzana Molnárová",
+  "email": "zuzana.molnarova@test.com",
+  "phone": "+421 900 000 008"
 }
 
 ###
@@ -48,5 +107,6 @@ Content-Type: application/json
 {
   "name": "Test Department",
   "code": "TDEP001",
-  "projectId": {{CreateProject.response.body.$.id}}
+  "projectId": {{CreateProject.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDepartment.response.body.$.id}}
 }

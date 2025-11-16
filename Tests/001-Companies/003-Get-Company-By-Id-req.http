@@ -1,3 +1,18 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Bc.",
+  "fullName": "Andrej Baláž",
+  "email": "andrej.balaz@test.com",
+  "phone": "+421 900 000 016"
+}
+
+###
+
 # @name CreateCompany
 ## TEST-EXPECT-STATUS: [201]
 ## TEST-HAS-BODY
@@ -6,7 +21,8 @@ Content-Type: application/json
 
 {
   "name": "Test Company Get",
-  "code": "TCG001"
+  "code": "TCG001",
+  "leaderId": {{CreateEmployee.response.body.$.id}}
 }
 
 ###

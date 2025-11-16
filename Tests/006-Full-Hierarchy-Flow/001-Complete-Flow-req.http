@@ -1,4 +1,18 @@
-# First create a company
+# First create employees for leaders
+# @name CreateEmployeeForCompany
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Robert Dvořák",
+  "email": "robert.dvorak@test.com",
+  "phone": "+421 900 000 012"
+}
+
+###
+
 # @name CreateCompanyForDivisions
 ## TEST-EXPECT-STATUS: [201]
 ## TEST-HAS-BODY
@@ -7,7 +21,22 @@ Content-Type: application/json
 
 {
   "name": "Company For Divisions Test",
-  "code": "CFD001"
+  "code": "CFD001",
+  "leaderId": {{CreateEmployeeForCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDivision
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Mgr.",
+  "fullName": "Veronika Bednárová",
+  "email": "veronika.bednarova@test.com",
+  "phone": "+421 900 000 013"
 }
 
 ###
@@ -21,7 +50,8 @@ Content-Type: application/json
 {
   "name": "Test Division Flow",
   "code": "TDF001",
-  "companyId": {{CreateCompanyForDivisions.response.body.$.id}}
+  "companyId": {{CreateCompanyForDivisions.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDivision.response.body.$.id}}
 }
 
 ###
@@ -29,6 +59,20 @@ Content-Type: application/json
 # @name GetDivisionById
 ## TEST-EXPECT-STATUS: [200]
 GET http://localhost:5223/api/divisions/{{CreateDivision.response.body.$.id}}
+
+###
+
+# @name CreateEmployeeForProject
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Bc.",
+  "fullName": "Marek Polák",
+  "email": "marek.polak@test.com",
+  "phone": "+421 900 000 014"
+}
 
 ###
 
@@ -41,7 +85,22 @@ Content-Type: application/json
 {
   "name": "Test Project Flow",
   "code": "TPF001",
-  "divisionId": {{CreateDivision.response.body.$.id}}
+  "divisionId": {{CreateDivision.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForProject.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDepartment
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Simona Gašparová",
+  "email": "simona.gasparova@test.com",
+  "phone": "+421 900 000 015"
 }
 
 ###
@@ -55,7 +114,8 @@ Content-Type: application/json
 {
   "name": "Test Department Flow",
   "code": "TDEF001",
-  "projectId": {{CreateProject.response.body.$.id}}
+  "projectId": {{CreateProject.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDepartment.response.body.$.id}}
 }
 
 ###

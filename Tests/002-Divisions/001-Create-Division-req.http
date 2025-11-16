@@ -1,3 +1,17 @@
+# @name CreateEmployeeForCompany
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Mgr.",
+  "fullName": "Martin Kováč",
+  "email": "martin.kovac@test.com",
+  "phone": "+421 900 000 003"
+}
+
+###
+
 # @name CreateCompany
 ## TEST-EXPECT-STATUS: [201]
 POST http://localhost:5223/api/companies
@@ -5,7 +19,22 @@ Content-Type: application/json
 
 {
   "name": "Test Company For Division",
-  "code": "TCFD001"
+  "code": "TCFD001",
+  "leaderId": {{CreateEmployeeForCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDivision
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Eva Horváthová",
+  "email": "eva.horvathova@test.com",
+  "phone": "+421 900 000 004"
 }
 
 ###
@@ -19,5 +48,6 @@ Content-Type: application/json
 {
   "name": "Test Division",
   "code": "TD001",
-  "companyId": {{CreateCompany.response.body.$.id}}
+  "companyId": {{CreateCompany.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDivision.response.body.$.id}}
 }

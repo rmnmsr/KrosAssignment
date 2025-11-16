@@ -1,3 +1,17 @@
+# @name CreateEmployeeForCompany
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Vladimír Šimek",
+  "email": "vladimir.simek@test.com",
+  "phone": "+421 900 100 001"
+}
+
+###
+
 # @name CreateCompany
 ## TEST-EXPECT-STATUS: [201]
 ## TEST-HAS-BODY
@@ -6,7 +20,22 @@ Content-Type: application/json
 
 {
   "name": "Test Company For Assignment",
-  "code": "TCFA001"
+  "code": "TCFA001",
+  "leaderId": {{CreateEmployeeForCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDivision
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Mgr.",
+  "fullName": "Tamara Janíková",
+  "email": "tamara.janikova@test.com",
+  "phone": "+421 900 100 002"
 }
 
 ###
@@ -20,7 +49,22 @@ Content-Type: application/json
 {
   "name": "Test Division For Assignment",
   "code": "TDFA001",
-  "companyId": {{CreateCompany.response.body.$.id}}
+  "companyId": {{CreateCompany.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDivision.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForProject
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Bc.",
+  "fullName": "Marek Bielik",
+  "email": "marek.bielik@test.com",
+  "phone": "+421 900 100 003"
 }
 
 ###
@@ -34,7 +78,22 @@ Content-Type: application/json
 {
   "name": "Test Project For Assignment",
   "code": "TPFA001",
-  "divisionId": {{CreateDivision.response.body.$.id}}
+  "divisionId": {{CreateDivision.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForProject.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDepartment
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Júlia Šoltésová",
+  "email": "julia.soltesova@test.com",
+  "phone": "+421 900 100 004"
 }
 
 ###
@@ -48,7 +107,8 @@ Content-Type: application/json
 {
   "name": "Test Department For Assignment",
   "code": "TDFA001",
-  "projectId": {{CreateProject.response.body.$.id}}
+  "projectId": {{CreateProject.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDepartment.response.body.$.id}}
 }
 
 ###

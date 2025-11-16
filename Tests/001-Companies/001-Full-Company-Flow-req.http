@@ -1,3 +1,18 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST {{ApiBaseUrl}}/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Jana Nováková",
+  "email": "jana.novakova@test.com",
+  "phone": "+421 900 000 002"
+}
+
+###
+
 # @name CreateCompany
 ## TEST-EXPECT-STATUS: [201]
 ## TEST-HAS-BODY
@@ -6,7 +21,8 @@ Content-Type: application/json
 
 {
   "name": "Test Company Flow",
-  "code": "TCF001"
+  "code": "TCF001",
+  "leaderId": {{CreateEmployee.response.body.$.id}}
 }
 
 ###
@@ -26,7 +42,8 @@ Content-Type: application/json
 {
   "id": {{CreateCompany.response.body.$.id}},
   "name": "Updated Company Flow",
-  "code": "TCF001-UPD"
+  "code": "TCF001-UPD",
+  "leaderId": {{CreateEmployee.response.body.$.id}}
 }
 
 ###

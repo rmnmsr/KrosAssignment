@@ -1,3 +1,17 @@
+# @name CreateEmployeeForCompany
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Mgr.",
+  "fullName": "Michal Balog",
+  "email": "michal.balog@test.com",
+  "phone": "+421 900 000 009"
+}
+
+###
+
 # @name CreateCompany
 ## TEST-EXPECT-STATUS: [201]
 POST http://localhost:5223/api/companies
@@ -5,7 +19,22 @@ Content-Type: application/json
 
 {
   "name": "Test Company For Project",
-  "code": "TCFP001"
+  "code": "TCFP001",
+  "leaderId": {{CreateEmployeeForCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForDivision
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Bc.",
+  "fullName": "Lucia Szabová",
+  "email": "lucia.szabova@test.com",
+  "phone": "+421 900 000 010"
 }
 
 ###
@@ -18,7 +47,22 @@ Content-Type: application/json
 {
   "name": "Test Division For Project",
   "code": "TDFP001",
-  "companyId": {{CreateCompany.response.body.$.id}}
+  "companyId": {{CreateCompany.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForDivision.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployeeForProject
+## TEST-EXPECT-STATUS: [201]
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Pavol Kiss",
+  "email": "pavol.kiss@test.com",
+  "phone": "+421 900 000 011"
 }
 
 ###
@@ -32,5 +76,6 @@ Content-Type: application/json
 {
   "name": "Test Project",
   "code": "TP001",
-  "divisionId": {{CreateDivision.response.body.$.id}}
+  "divisionId": {{CreateDivision.response.body.$.id}},
+  "leaderId": {{CreateEmployeeForProject.response.body.$.id}}
 }
