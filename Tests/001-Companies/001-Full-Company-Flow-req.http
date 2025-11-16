@@ -1,0 +1,36 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST {{ApiBaseUrl}}/api/companies
+Content-Type: application/json
+
+{
+  "name": "Test Company Flow",
+  "code": "TCF001"
+}
+
+###
+
+# @name GetCompanyById
+## TEST-EXPECT-STATUS: [200]
+## TEST-HAS-BODY
+GET {{ApiBaseUrl}}/api/companies/{{CreateCompany.response.body.$.id}}
+
+###
+
+# @name UpdateCompany
+## TEST-EXPECT-STATUS: [200]
+PUT {{ApiBaseUrl}}/api/companies/{{CreateCompany.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "id": {{CreateCompany.response.body.$.id}},
+  "name": "Updated Company Flow",
+  "code": "TCF001-UPD"
+}
+
+###
+
+# @name DeleteCompany
+## TEST-EXPECT-STATUS: [204]
+DELETE {{ApiBaseUrl}}/api/companies/{{CreateCompany.response.body.$.id}}

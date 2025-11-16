@@ -1,0 +1,52 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/companies
+Content-Type: application/json
+
+{
+  "name": "Test Company For Dept",
+  "code": "TCFD001"
+}
+
+###
+
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/divisions
+Content-Type: application/json
+
+{
+  "name": "Test Division For Dept",
+  "code": "TDFD001",
+  "companyId": {{CreateCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateProject
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/projects
+Content-Type: application/json
+
+{
+  "name": "Test Project For Dept",
+  "code": "TPFD001",
+  "divisionId": {{CreateDivision.response.body.$.id}}
+}
+
+###
+
+# @name CreateDepartment
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/departments
+Content-Type: application/json
+
+{
+  "name": "Test Department",
+  "code": "TDEP001",
+  "projectId": {{CreateProject.response.body.$.id}}
+}

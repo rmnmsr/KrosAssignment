@@ -1,0 +1,75 @@
+# First create a company
+# @name CreateCompanyForDivisions
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/companies
+Content-Type: application/json
+
+{
+  "name": "Company For Divisions Test",
+  "code": "CFD001"
+}
+
+###
+
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/divisions
+Content-Type: application/json
+
+{
+  "name": "Test Division Flow",
+  "code": "TDF001",
+  "companyId": {{CreateCompanyForDivisions.response.body.$.id}}
+}
+
+###
+
+# @name GetDivisionById
+## TEST-EXPECT-STATUS: [200]
+GET http://localhost:5223/api/divisions/{{CreateDivision.response.body.$.id}}
+
+###
+
+# @name CreateProject
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/projects
+Content-Type: application/json
+
+{
+  "name": "Test Project Flow",
+  "code": "TPF001",
+  "divisionId": {{CreateDivision.response.body.$.id}}
+}
+
+###
+
+# @name CreateDepartment
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/departments
+Content-Type: application/json
+
+{
+  "name": "Test Department Flow",
+  "code": "TDEF001",
+  "projectId": {{CreateProject.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Mgr.",
+  "fullName": "Jana Mrázová",
+  "email": "jane.smith@testflow.com",
+  "phone": "+421 111 222 333",
+  "departmentId": {{CreateDepartment.response.body.$.id}}
+}

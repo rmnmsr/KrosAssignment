@@ -1,0 +1,22 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/companies
+Content-Type: application/json
+
+{
+  "name": "Test Company Update",
+  "code": "TCU001"
+}
+
+###
+
+## TEST-EXPECT-STATUS: [200]
+PUT http://localhost:5223/api/companies/{{CreateCompany.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "id": {{CreateCompany.response.body.$.id}},
+  "name": "Updated Test Company",
+  "code": "TCU001-UPD"
+}

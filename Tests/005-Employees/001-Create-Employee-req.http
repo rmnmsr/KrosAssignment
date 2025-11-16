@@ -1,0 +1,68 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/companies
+Content-Type: application/json
+
+{
+  "name": "Test Company For Emp",
+  "code": "TCFE001"
+}
+
+###
+
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/divisions
+Content-Type: application/json
+
+{
+  "name": "Test Division For Emp",
+  "code": "TDFE001",
+  "companyId": {{CreateCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateProject
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/projects
+Content-Type: application/json
+
+{
+  "name": "Test Project For Emp",
+  "code": "TPFE001",
+  "divisionId": {{CreateDivision.response.body.$.id}}
+}
+
+###
+
+# @name CreateDepartment
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/departments
+Content-Type: application/json
+
+{
+  "name": "Test Department For Emp",
+  "code": "TDFE001",
+  "projectId": {{CreateProject.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Ján Novák",
+  "email": "john.doe@test.com",
+  "phone": "+421 123 456 789",
+  "departmentId": {{CreateDepartment.response.body.$.id}}
+}

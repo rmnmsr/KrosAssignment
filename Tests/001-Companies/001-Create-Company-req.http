@@ -1,0 +1,10 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/companies
+Content-Type: application/json
+
+{
+  "name": "Test Company",
+  "code": "TC001"
+}

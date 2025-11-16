@@ -1,0 +1,3 @@
+## TEST-EXPECT-STATUS: [200]
+## TEST-HAS-BODY
+GET http://localhost:5223/api/divisions

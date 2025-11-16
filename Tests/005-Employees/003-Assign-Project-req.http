@@ -1,0 +1,75 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/companies
+Content-Type: application/json
+
+{
+  "name": "Test Company For Assignment",
+  "code": "TCFA001"
+}
+
+###
+
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/divisions
+Content-Type: application/json
+
+{
+  "name": "Test Division For Assignment",
+  "code": "TDFA001",
+  "companyId": {{CreateCompany.response.body.$.id}}
+}
+
+###
+
+# @name CreateProject
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/projects
+Content-Type: application/json
+
+{
+  "name": "Test Project For Assignment",
+  "code": "TPFA001",
+  "divisionId": {{CreateDivision.response.body.$.id}}
+}
+
+###
+
+# @name CreateDepartment
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/departments
+Content-Type: application/json
+
+{
+  "name": "Test Department For Assignment",
+  "code": "TDFA001",
+  "projectId": {{CreateProject.response.body.$.id}}
+}
+
+###
+
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST http://localhost:5223/api/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "fullName": "Peter Mráz",
+  "email": "john.doe.assign@test.com",
+  "phone": "+421 987 654 321",
+  "departmentId": {{CreateDepartment.response.body.$.id}}
+}
+
+###
+
+# @name GetEmployee
+## TEST-EXPECT-STATUS: [200]
+## TEST-HAS-BODY
+GET http://localhost:5223/api/employees/{{CreateEmployee.response.body.$.id}}
